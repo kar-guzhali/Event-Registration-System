@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Event Registration</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+        padding: 20px;
+    }
+    .container {
+        max-width: 400px;
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        margin: auto;
+        box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    h2 {
+        text-align: center;
+    }
+    input, select, button {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0;
+    }
+    button {
+        background: #28a745;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+    button:hover {
+        background: #218838;
+    }
+    .error {
+        color: red;
+        font-size: 14px;
+    }
+    .success {
+        color: green;
+        font-size: 16px;
+        text-align: center;
+    }
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Event Registration</h2>
+
+    <form id="eventForm">
+        <input type="text" id="name" placeholder="Enter your name" required>
+        <input type="email" id="email" placeholder="Enter your email" required>
+
+        <select id="event">
+            <option value="">Select Event</option>
+            <option value="Workshop">Workshop</option>
+            <option value="Seminar">Seminar</option>
+            <option value="Conference">Conference</option>
+        </select>
+
+        <input type="number" id="seats" placeholder="Number of seats" min="1" max="5" required>
+
+        <button type="submit">Register</button>
+    </form>
+
+    <p id="message"></p>
+</div>
+
+<script>
+let availableSeats = 20; // Dynamic seat count
+
+document.getElementById("eventForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let name = document.getElementById("name").value.trim();
+    let email = document.getElementById("email").value.trim();
+    let event = document.getElementById("event").value;
+    let seats = parseInt(document.getElementById("seats").value);
+    let message = document.getElementById("message");
+
+    message.innerHTML = "";
+
+    // Error handling & validation
+    if (name === "" || email === "" || event === "") {
+        message.innerHTML = "❌ Please fill all fields!";
+        message.className = "error";
+        return;
+    }
+
+    if (seats > availableSeats) {
+        message.innerHTML = "❌ Not enough seats available!";
+        message.className = "error";
+        return;
+    }
+
+    // Update seat count
+    availableSeats -= seats;
+
+    // Confirmation message
+    message.innerHTML = `✅ Registration successful! Remaining seats: ${availableSeats}`;
+    message.className = "success";
+
+    // Reset form
+    document.getElementById("eventForm").reset();
+});
+</script>
+
+</body>
+</html>
